@@ -1,5 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Admin {
@@ -31,8 +30,31 @@ public class Admin {
                 switch (choice) {
                     case 1:
                         System.out.println("add consumer");
+                        System.out.println("enter name:");
+                        name=s.next();
+                        System.out.println("enter address");
+                        address=s.next();
+                        System.out.println("enter consumer id");
+                        consumerid=s.nextInt();
+                        System.out.println("enter phone number");
+                        phoneno=s.next();
+                        try{
+                            Class.forName("com.mysql.jdbc.Driver");
+                            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb","root","");
+                            String sql="INSERT INTO `consumer`( `name`, `address`, `consumerid`, `phone`) VALUES (?,?,?,?)";
+                            PreparedStatement stmt = con.prepareStatement(sql);
+                            stmt.setString(1,name);
+                            stmt.setString(2,address);
+                            stmt.setInt(3,consumerid);
+                            stmt.setString(4,phoneno );
+
+                        }
+                        catch (Exception e){
+                            System.out.println(e);
+                        }
                     case 2:
                         System.out.println("search consumer");
+
                     case 3:
                         System.out.println("delete consumer");
                     case 4:
