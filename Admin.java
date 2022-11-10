@@ -54,11 +54,25 @@ public class Admin {
                         }
                     case 2:
                         System.out.println("search consumer");
-
                     case 3:
                         System.out.println("delete consumer");
+                        System.out.println("enter consumer id:");
+                        String consumer=s.next();
+                        try{
+                            Class.forName("com.mysql.jdbc.Driver");
+                            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb","root","");
+                            String sql="DELETE FROM `consumer` WHERE `consumerid`="+consumer;
+                            Statement stmt =con.createStatement();
+                            stmt.executeUpdate(sql);
+                            System.out.println("deleted successfully");
+                        }
+                        catch (Exception e){
+                            System.out.println((e));
+                        }
                     case 4:
-                        System.out.println("update consumer");
+
+
+
                     case 5:
                         System.out.println("view all consumer");
                     case 6:
