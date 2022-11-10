@@ -70,6 +70,28 @@ public class Admin {
                             System.out.println((e));
                         }
                     case 4:
+                        System.out.println("update consumer");
+                        System.out.println("enter consumer id");
+                        consumerid=s.nextInt();
+                        System.out.println("enter  name to be updated");
+                        name=s.next();
+                        System.out.println("enter address to be updated");
+                        address=s.next();
+                        System.out.println("enter consumer id to be updated");
+                        int cid=s.nextInt();
+                        System.out.println("enter phone number to be updated");
+                        phoneno=s.next();
+                        try {
+                            Class.forName("com.mysql.jdbc.Driver");
+                            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb","root","");
+                            String sql="UPDATE `consumer` SET `name`='"+name+"',`address`='"+address+"',`consumerid`='"+String.valueOf(cid)+"',`phone`='"+phoneno+"' WHERE `consumerid`="+String.valueOf(consumerid);
+                            Statement stmt =con.createStatement();
+                            stmt.executeUpdate(sql);
+                            System.out.println("update successfully");
+                        }
+                        catch(Exception e){
+                            System.out.println(e);
+                        }
 
 
 
