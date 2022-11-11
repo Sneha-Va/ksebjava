@@ -52,8 +52,35 @@ public class Admin {
                         catch (Exception e){
                             System.out.println(e);
                         }
+                        break;
                     case 2:
                         System.out.println("search consumer");
+                        System.out.println("Enter the Consumer Code/Name/Phone to search: ");
+                        String searchOption = s.next();
+                        try {
+                            Class.forName("com.mysql.jdbc.Driver");
+                            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb", "root", "");
+                            String sql = "SELECT `name`, `address`, `consumerid`, `phone` FROM `consumer` WHERE `consumerid` ='"+searchOption+"'  OR `name`='"+searchOption+"' OR `Phone` ='"+searchOption+"' ";
+                            Statement stmt = con.createStatement();
+                            ResultSet rs = stmt.executeQuery(sql);
+                            while (rs.next()){
+                                String getname = rs.getString("name");
+                                String getaddress = rs.getString("address");
+                                String getconsumerid = rs.getString("consumerid");
+                                String getphoneno = rs.getString("phone");
+
+                                System.out.println("name="+getname);
+                                System.out.println("address="+getaddress);
+                                System.out.println("consumerid="+getconsumerid);
+                                System.out.println("phone="+getphoneno);
+
+                            }
+                        }
+                        catch (Exception e){
+                            System.out.println(e);
+                        }
+
+                        break;
                     case 3:
                         System.out.println("delete consumer");
                         System.out.println("enter consumer id:");
@@ -92,6 +119,7 @@ public class Admin {
                         catch(Exception e){
                             System.out.println(e);
                         }
+                        break;
                         case 5:
                         System.out.println("view all consumer");
                             try{
@@ -116,12 +144,17 @@ public class Admin {
                             catch (Exception e){
                                 System.out.println(e);
                             }
+                            break;
                     case 6:
                         System.out.println("generate bill");
+                        break;
+
                     case 7:
                         System.out.println("view all bill");
+                        break;
                     case 8:
                         System.out.println("top two bill");
+                        break;
                     case 9:
                         System.out.println("exit");
                         break;
