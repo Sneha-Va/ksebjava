@@ -201,10 +201,68 @@ public class Admin {
 
                     case 7:
                         System.out.println("view all bill");
+                        try{
+                            Class.forName("com.mysql.jdbc.Driver");
+                            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb","root","");
+                            String sql = "SELECT  b.`consumerid`, b.`month`, b.`year`, b.`bill`, b.`billstatus`, b.`billdate`, b.`totalunit`, b.`duedate`, b.`invoice`,c.consumerid,c.name FROM `bills` b JOIN consumer c ON b.consumerid=c.id";
+                            Statement stmt = con.createStatement();
+                            ResultSet rs = stmt.executeQuery(sql);
+                            while (rs.next()){
+                                String getconsumerid = rs.getString("consumerid");
+                                String getmonth= rs.getString("month");
+                                String getyear = rs.getString("year");
+                                String getbill = rs.getString("bill");
+                                String getbillstatus = rs.getString("billstatus");
+                                String getbilldate = rs.getString("billdate");
+                                String gettotalunit = rs.getString("totalunit");
+                                String getdueDate = rs.getString("duedate");
+                                String getinvoice = rs.getString("invoice");
+                                String getConsumerCode = rs.getString("consumerid");
+                                String getConsumerName = rs.getString("name");
+                                System.out.println("Consumer Id="+getconsumerid);
+                                System.out.println("Month="+getmonth);
+                                System.out.println("Year="+getyear);
+                                System.out.println("Bill ="+getbill);
+                                System.out.println("PaidStatus ="+getbillstatus);
+                                System.out.println("Bill Date ="+getbilldate);
+                                System.out.println("Total Unit ="+gettotalunit);
+                                System.out.println("Due Date ="+getdueDate);
+                                System.out.println("Invoice ="+getinvoice);
+                                System.out.println("Consumer Code ="+getConsumerCode);
+                                System.out.println("Consumer Name="+getConsumerName+"\n");
+                            }
+
+                        }
+                        catch (Exception e){
+                            System.out.println(e);
+                        }
+
                         break;
+
                     case 8:
                         System.out.println("top two bill");
+                        try{
+                            Class.forName("com.mysql.jdbc.Driver");
+                            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb", "root", "");
+                            String sql = "SELECT c.name,c.address,b.`bill`, b.`totalunit` FROM `bills` b JOIN consumer c ON b.consumerid=c.id ORDER BY b.`bill`DESC LIMIT 2";
+                            Statement stmt = con.createStatement();
+                            ResultSet rs = stmt.executeQuery(sql);
+                            while(rs.next()){
+                                name = rs.getString("c.name");
+                                address = rs.getString("c.address");
+                                int bill = rs.getInt("b.bill");
+                                int total = rs.getInt("totalunit");
+                                System.out.println("name ="+name);
+                                System.out.println("address ="+address);
+                                System.out.println("total bill = "+bill);
+                                System.out.println("total unit ="+total+'\n');
+                            }
+                        }
+                        catch (Exception e){
+                            System.out.println(e);
+                        }
                         break;
+
                     case 9:
                         System.out.println("exit");
                         break;
