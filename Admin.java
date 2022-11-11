@@ -92,11 +92,30 @@ public class Admin {
                         catch(Exception e){
                             System.out.println(e);
                         }
-
-
-
-                    case 5:
+                        case 5:
                         System.out.println("view all consumer");
+                            try{
+                                Class.forName("com.mysql.jdbc.Driver");
+                                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb","root","");
+                                String sql="SELECT `id`, `name`, `address`, `consumerid`, `phone` FROM `consumer`";
+                                Statement stmt = con.createStatement();
+                                ResultSet rs= stmt.executeQuery(sql);
+                                while (rs.next()){
+                                    String getname=rs.getString("name");
+                                    String getaddress=rs.getString("address");
+                                    String getconsumerid=rs.getString("consumerid");
+                                    String getphone=rs.getString("phone");
+                                    System.out.println("name="+getname);
+                                    System.out.println("address="+getaddress);
+                                    System.out.println("consumerid="+getconsumerid);
+                                    System.out.println("phone="+getphone);
+
+                                }
+
+                            }
+                            catch (Exception e){
+                                System.out.println(e);
+                            }
                     case 6:
                         System.out.println("generate bill");
                     case 7:
