@@ -1,11 +1,13 @@
 import java.sql.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 public class Admin {
     public static void main(String args[]) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb", "root", "");
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb", "root", "");
 
         } catch (Exception e) {
             System.out.println(e);
@@ -147,6 +149,54 @@ public class Admin {
                             break;
                     case 6:
                         System.out.println("generate bill");
+                        System.out.println("Generate Bill");
+//getting current month and year
+                        GregorianCalendar date = new GregorianCalendar();
+                        int currentMonth = date.get(Calendar.MONTH);
+                        int currentYear = date.get(Calendar.YEAR);
+                        currentMonth = currentMonth+1;
+                        try {
+                            //
+                            Class.forName("com.mysql.jdbc.Driver");
+                            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ksebdb", "root", "");
+                            String sql = "DELETE FROM `bills` WHERE `month`= '" + currentMonth + "'AND `year`= '" + currentYear + "'";
+                            Statement stmt = con.createStatement();
+                            stmt.executeUpdate(sql);
+                            System.out.println("Previous data deleted");
+                            String sql1 = "SELECT `id` FROM `consumer` ";
+                            Statement stmt1 = con.createStatement();
+                            ResultSet rs = stmt1.executeQuery(sql1);
+                            while (rs.next()) {
+                                int id = rs.getInt("id");
+                                String sql2 = "select SUM(`unit`) from `usage` where month(date) = '"+currentMonth+"' AND year(date) = '"+currentYear+"' AND `consumerid` ='"+id+"'";
+                                Statement stmt2 = con.createStatement();
+                                ResultSet rs1 = stmt2.executeQuery(sql2);
+                                while (rs1.next()) {
+                                    int add = rs1.getInt("SUM(`unit`)");
+                                    int status = 0;
+                                    int totalBill = add * 5;
+                                    //generating random number for invoice
+                                    int min = 10000;
+                                    int max = 99999;
+                                    int invoice = (int)(Math.random() * (max - min + 1) + min);
+                                    // String sql3 = "INSERT INTO `bill`(`User_Id`, `month`, `year`, `bill`, `paid status`, `bill date`, `total_unit`) VALUES (%s,%s,%s,%s,%s,now(),%s)";
+                                    String sql3 = "INSERT INTO `bills`(`consumerid`, `month`, `year`, `bill`, `billstatus`, `billdate`, `totalunit`, `duedate`, `invoice`) VALUES (?,?,?,?,?,now(),?,now()+ interval 14 day,?)";
+                                    PreparedStatement stmt3 = con.prepareStatement(sql3);
+                                    stmt3.setInt(1, id);
+                                    stmt3.setInt(2, currentMonth);
+                                    stmt3.setInt(3, currentYear);
+                                    stmt3.setInt(4, totalBill);
+                                    stmt3.setInt(5, 0);
+                                    stmt3.setInt(6, add);
+                                    stmt3.setInt(7, invoice);
+                                    stmt3.executeUpdate();
+                                }
+                            }
+
+                        }
+                        catch(Exception e){
+                            System.out.println(e);
+                        }
                         break;
 
                     case 7:
